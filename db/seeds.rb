@@ -6,6 +6,10 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+puts "* Create an Admin User"
+# Admin Stuff
+AdminUser.create(email: 'adam', password: 'password', password_confirmation: 'password')
+
 
 if Rails.env.development? then
     # Clean up
@@ -16,11 +20,6 @@ if Rails.env.development? then
     Attendance.destroy_all
 
     #Start from scratch
-
-    puts "* Create an Admin User"
-    # Admin Stuff
-    AdminUser.create(email: 'adam', password: 'password', password_confirmation: 'password')
-    
     puts "* Build some lessons"
     # Lessons
     good_lesson = Lesson.create(
@@ -48,7 +47,5 @@ if Rails.env.development? then
 
     puts "* And make a lesson history"
     Attendance.create(student_id: diligent_student.id, lesson_id: good_lesson.id)
-else 
-    AdminUser.create(email: 'adam', password: 'password', password_confirmation: 'password');
 end
 

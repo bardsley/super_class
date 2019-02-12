@@ -9,6 +9,7 @@
 
 if Rails.env.development? then
     # Clean up
+    puts "* Destroying existing data"
     AdminUser.destroy_all
     Student.destroy_all
     Lesson.destroy_all
@@ -16,9 +17,11 @@ if Rails.env.development? then
 
     #Start from scratch
 
+    puts "* Create an Admin User"
     # Admin Stuff
     AdminUser.create(email: 'adam.bardsley@gmail.com', password: 'password', password_confirmation: 'password')
     
+    puts "* Build some lessons"
     # Lessons
     good_lesson = Lesson.create(
         name: "Super Salsa Sunday", 
@@ -36,9 +39,13 @@ if Rails.env.development? then
         start_at: DateTime.now + 7.days,
         end_at: DateTime.now + 7.days + 4.hours,
     )
+    
+    puts "* Get some students"
 
     # Students
     diligent_student = Student.create(full_name: 'Joe Suggs', email: 'joe.suggs@gmail.com', phone_number: '0800 JSUGGS')
     non_diligent_student = Student.create(full_name: "Adam Bardsley", email: "adam.bardsley@gmail.com", phone_number: "07734774125")
+
+    puts "* And make a lesson history"
     Attendance.create(student_id: diligent_student.id, lesson_id: good_lesson.id)
 end

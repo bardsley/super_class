@@ -1,0 +1,15 @@
+{
+  "short_name": "Super Class",
+  "name": "Super Class - Manage your class super",
+  "icons": [
+    {
+      "src": "app-icon.ico",
+      "sizes": "192x192",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

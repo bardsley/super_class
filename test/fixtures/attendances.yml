@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  student_id: 
+  lesson_id: 
+  created_at: 2019-02-08 18:20:47
+  updated_at: 2019-02-08 18:20:47
+
+two:
+  student_id: 
+  lesson_id: 
+  created_at: 2019-02-08 18:20:47
+  updated_at: 2019-02-08 18:20:47

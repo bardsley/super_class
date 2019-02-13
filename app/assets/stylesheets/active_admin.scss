@@ -11,6 +11,11 @@
 @import "active_admin/mixins";
 @import "active_admin/base";
 
+$skinLogo: url("/admin_logo.png") no-repeat 0 0;
+@import "active_skin";
+#header h1#site_title {
+    background-size: auto 100%;
+}
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:
 //

@@ -1,7 +1,7 @@
 import * as actions from './actions'
 
 const initialState = {
-    currentLesson: 10,
+    currentLesson: 12, // TODO dont set a random ID
     currentStudent: null
 }
 

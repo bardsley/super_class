@@ -13,7 +13,11 @@ class Student extends Component {
       </span>
       <a className="mdl-list__item-secondary-content"  href="/#" >
         <span className="mdl-list__item-secondary-action" >
-          <i className="material-icons md-inactive">{this.props.active ? "assignment_turned_in" : "assignment" }</i>
+          {
+            this.props.active ? 
+              <i className="material-icons md-inactive negative">remove_circle</i> 
+              : <i className="material-icons md-inactive positive">add_circle_outline</i>
+          }
         </span>
       </a>
     </li>

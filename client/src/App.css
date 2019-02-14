@@ -35,3 +35,6 @@
 .is-focused .mdl-textfield__label .material-icons,
 .is-dirty .mdl-textfield__label .material-icons
 { font-size: 14px; vertical-align: text-bottom; padding-right: 2px; }
+
+.material-icons.positive { color: #0c0}
+.material-icons.negative { color: #c00}

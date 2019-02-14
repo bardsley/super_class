@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import * as actions from './store/actions'
 
 class Menu extends Component {
   constructor () {
@@ -53,7 +54,7 @@ class Menu extends Component {
               e.preventDefault();
               let layout = document.querySelector('.mdl-layout');
               layout.MaterialLayout.toggleDrawer();
-              this.props.onSetCurrentLesson(lesson.id);
+              this.props.onSetCurrentLesson(lesson);
             }}
             >
             {lesson.name} 
@@ -74,7 +75,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSetCurrentLesson: (lesson_id) => dispatch({type: 'SET_LESSON', lesson_id: lesson_id})
+    onSetCurrentLesson: (lesson) => dispatch(actions.setLesson(lesson))
   }
 }
 

@@ -9,10 +9,11 @@ const reducer = (state = initialState, action) => {
     const newState = {...state}
     switch (action.type) {
         case actions.SET_LESSON:
+            newState.lesson = action.lesson
             newState.currentLesson = action.lesson_id
             break;
         default:
-        if(/@@redux/.test(action.type)) {} else {
+        if(/@@redux/.test(action.type) || /@@INIT/.test(action.type)) {} else {
             console.error("No Code for action.type", action.type)
         }
     }

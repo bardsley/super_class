@@ -10,7 +10,7 @@ class LessonsController < ApiController
 
   # GET /lessons/1
   def show
-    render json: @lesson
+    render json: @lesson, :include => {:attendances => {:only => [:student_id]}}
   end
 
   # POST /lessons
@@ -41,7 +41,7 @@ class LessonsController < ApiController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_lesson
-      @lesson = Lesson.find(params[:id])
+      @lesson = Lesson.includes(:attendances).find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.

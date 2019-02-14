@@ -66,6 +66,18 @@ class Content extends Component {
 
   getStudents () {
     this.filterStudents(null)
+    this.getLesson(this.props.currentLesson)
+  }
+
+  getLesson (lesson_id) {
+    this.fetch('/api/lessons/' + lesson_id)
+      .then(lesson => {
+        if (lesson) {
+          this.setState({lesson: lesson})
+        } else {
+          this.setState({lesson: null})
+        }
+      })
   }
 
   fetchAndStoreStudent(id) {
@@ -106,10 +118,7 @@ class Content extends Component {
         student => {
           this.setState({student: student})
           let origStudents = this.state.students
-          console.log(origStudents)
           origStudents.push(student)
-          // let newStudents =
-          console.log(origStudents)
           this.setState({students: origStudents })
         }
     )
@@ -119,6 +128,10 @@ class Content extends Component {
 
     let {students} = this.state
     let currentLesson = this.props.currentLesson
+    let attendance_ids = []
+    if(this.state.lesson) {
+      attendance_ids = this.state.lesson.attendances.map((attendance) => {return attendance.student_id})
+    }
     // Default to a spinner
     let content = <div> 
       <div id="spinner" className="mdl-spinner mdl-js-spinner"></div>
@@ -129,10 +142,13 @@ class Content extends Component {
         if(students.length) { // There are some students
           content = <div className="student-list">
             <ul className="mdl-list"> {Object.keys(students).map((key) => {
-              return <Student key={"student-" + students[key].id} 
-                student={ students[key] } 
-                active={students[key].attending} 
-                onClick={() => this.toggleAttendance(students[key])}
+              let student = students[key]
+              if(student.attending == null) { student.attending = attendance_ids.includes(student.id) }
+
+              return <Student key={"student-" + student.id} 
+                student={ student } 
+                active={student.attending} 
+                onClick={() => this.toggleAttendance(student)}
               />
               // return <Student key={"student-" + students[key].id} student={ students[key] } active={student && (students[key].id === student.id)} 
               //   onClick={() => this.props.onSelectStudent(students[key].id)}

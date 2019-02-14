@@ -31,12 +31,7 @@ class Menu extends Component {
           }
         })
   }
-  setLesson(lesson) {
-    window.app.setState({currentLesson: lesson})
-    this.setState({lesson: lesson})
-  }
-  
-  
+ 
   render() {
     let lessons = this.state.lessons
 
@@ -58,7 +53,6 @@ class Menu extends Component {
               e.preventDefault();
               let layout = document.querySelector('.mdl-layout');
               layout.MaterialLayout.toggleDrawer();
-              // this.setLesson(lesson.id)}}
               this.props.onSetCurrentLesson(lesson.id);
             }}
             >

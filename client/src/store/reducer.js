@@ -12,6 +12,11 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actions.SET_LESSON:
             newState.lesson = action.lesson
+            let attending_students = action.lesson.attendances.map((attendance) => { return attendance.student_id})
+            newState.students = state.students.map((student) => {
+                student.attending = attending_students.includes(student.id)
+                return student
+            })
             break;
         case actions.LOAD_STUDENTS:
             newState.students = action.students
@@ -25,7 +30,6 @@ const reducer = (state = initialState, action) => {
             })
             break;
         case actions.CREATE_STUDENT:
-            console.log("CREATED A STUDNET")
             break;
         default:
         if(/@@redux/.test(action.type) || /@@INIT/.test(action.type)) {} else {

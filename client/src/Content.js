@@ -9,136 +9,30 @@ class Content extends Component {
   constructor () {
     super()
     this.state = {}
-    this.getStudents = this.getStudents.bind(this)
-    // this.setStudent = this.setStudent.bind(this)
   }
 
   componentDidMount() {
     // this.spinner = document.getElementById('spinner')
     // componentHandler.upgradeElement(this.spinner);
-    this.getStudents()
-    window.app = this
+    this.props.onLoadStudents()
   }
 
-  fetch (endpoint) {
-    return window.fetch(endpoint)
-      .then(response => response.json())
-      .catch(error => console.log(error))
-  }
-
-  post (endpoint,body) {
-    return window.fetch(endpoint,{
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body)
-    })
-    .then(response => response.json())
-    .catch(error => console.log(error))
-  }
-
-  delete(endpoint,body) {
-    return window.fetch(endpoint,{
-      method: 'DELETE',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body)
-    })
-    .catch(error => console.log(error))
-  }
-
-  filterStudents(query) {
-    let query_string = query ? "?q=" + query : ""
-    this.fetch('/api/students' + query_string)
-        .then(students => {
-          if (students && students.length) {
-            this.setState({students: students})
-            //this.getStudent(students[0].id)
-          } else {
-            this.setState({students: []})
-          }
-        })
-  }
-
-  getStudents () {
-    this.filterStudents(null)
-    this.getLesson(this.props.currentLesson)
-  }
-
-  getLesson (lesson_id) {
-    this.fetch('/api/lessons/' + lesson_id)
-      .then(lesson => {
-        if (lesson) {
-          this.setState({lesson: lesson})
-        } else {
-          this.setState({lesson: null})
-        }
-      })
-  }
-
-  fetchAndStoreStudent(id) {
-    this.fetch(`/api/students/${id}`)
-      .then(student => {
-        this.setState({student: student})
-        this.post('/api/attendances', {
-          student_id: student.id,
-          lesson_id: this.props.currentLesson
-        })
-      })
-  }
-  toggleAttendance (student) {
-    student.attending = !student.attending
-    this.setState({student: student})
-    if(student.attending) {
-      this.post('/api/attendances', {
-        student_id: student.id,
-        lesson_id: this.props.currentLesson
-      })
-    } else {
-      this.delete('/api/attendances/clear',{
-        student_id: student.id,
-        lesson_id: this.props.currentLesson  
-      })
-    }
-    
-  }
-
-  createStudent() {
-    this.post('/api/students', {
-      email: "newbie@whatevs.com",
-      first_name: "New",
-      last_name: "Bee",
-      phone_number: "012345567218",
-    })
-    .then(
-        student => {
-          this.setState({student: student})
-          let origStudents = this.state.students
-          origStudents.push(student)
-          this.setState({students: origStudents })
-        }
-    )
-  }
 
   render() {
 
-    let {students} = this.state
-    let currentLesson = this.props.currentLesson
+    let {students,lesson} = this.props
+    // let currentLesson = this.props.currentLesson
     let attendance_ids = []
     if(this.state.lesson) {
       attendance_ids = this.state.lesson.attendances.map((attendance) => {return attendance.student_id})
     }
     // Default to a spinner
     let content = <div> 
-      <div id="spinner" className="mdl-spinner mdl-js-spinner"></div>
+      <div id="spinner" className="mdl-spinner mdl-js-spinner">Spin</div>
     </div>
     
     if(students) { // Something was returned
-      if(currentLesson) { // we have selected a lesson
+      if(this.props.lesson) { // we have selected a lesson
         if(students.length) { // There are some students
           content = <div className="student-list">
             <ul className="mdl-list"> {Object.keys(students).map((key) => {
@@ -148,11 +42,8 @@ class Content extends Component {
               return <Student key={"student-" + student.id} 
                 student={ student } 
                 active={student.attending} 
-                onClick={() => this.toggleAttendance(student)}
+                onClick={() => this.props.onToggleAttendance(lesson,student)}
               />
-              // return <Student key={"student-" + students[key].id} student={ students[key] } active={student && (students[key].id === student.id)} 
-              //   onClick={() => this.props.onSelectStudent(students[key].id)}
-              // />
             })}
             </ul>
           </div>
@@ -161,6 +52,8 @@ class Content extends Component {
               <StudentForm></StudentForm>
           </div>
         }
+      } else {
+        content = <div>Please select a lesson from the menu</div>
       }
     }
 
@@ -173,13 +66,16 @@ class Content extends Component {
 
 const mapStateToProps = state => {
   return {
-    currentLesson: state.currentLesson
+    lesson: state.lesson,
+    students: state.students
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSelectStudent: (student_id) => dispatch({type: actions.SET_STUDENT, student_id: student_id})
+    onSelectStudent: (student_id) => dispatch({type: actions.SET_STUDENT, student_id: student_id}),
+    onLoadStudents: () => dispatch(actions.loadStudents()),
+    onToggleAttendance: (lesson,student) => dispatch(actions.toggleStudentAttendance(lesson,student))
   }
 }
 

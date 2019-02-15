@@ -1,8 +1,10 @@
 import * as actions from './actions'
 
 const initialState = {
-    currentLesson: 12, // TODO dont set a random ID
-    currentStudent: null
+    // lesson: {
+    //     id: 12,
+    //     attendances: []
+    // }
 }
 
 const reducer = (state = initialState, action) => {
@@ -10,7 +12,20 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actions.SET_LESSON:
             newState.lesson = action.lesson
-            newState.currentLesson = action.lesson_id
+            break;
+        case actions.LOAD_STUDENTS:
+            newState.students = action.students
+            break;
+        case actions.TOGGLE_STUDENT:
+            newState.students = state.students.map((student) => {
+                if(student.id === action.student.id) {
+                    student.attending = action.student.attending
+                }
+                return student
+            })
+            break;
+        case actions.CREATE_STUDENT:
+            console.log("CREATED A STUDNET")
             break;
         default:
         if(/@@redux/.test(action.type) || /@@INIT/.test(action.type)) {} else {

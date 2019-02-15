@@ -6,8 +6,6 @@ class Menu extends Component {
   constructor () {
     super()
     this.state = {}
-    this.getLessons = this.getLessons.bind(this)
-    // this.setLesson = this.setLesson.bind(this)
   }
 
   componentDidMount() {
@@ -47,14 +45,17 @@ class Menu extends Component {
         <span className="mdl-layout-title">Menu</span>
         <nav className="mdl-navigation"> {Object.keys(lessons).map((key) => {
           let lesson = lessons[key]
-          let selected_class = lesson.id === this.props.currentLesson ? ' mdl-navigation__link--current' : ''
+          let selected_class = null
+          if(this.props.lesson) {
+            selected_class = lesson.id === this.props.lesson.id ? ' mdl-navigation__link--current' : ''
+          }
           return <a className={"mdl-navigation__link " +selected_class } key={"lesson-" + lesson.id} 
             href={"#" + key}
             onClick={(e) => {
               e.preventDefault();
               let layout = document.querySelector('.mdl-layout');
               layout.MaterialLayout.toggleDrawer();
-              this.props.onSetCurrentLesson(lesson);
+              this.props.onSelectLesson(lesson);
             }}
             >
             {lesson.name} 
@@ -69,13 +70,13 @@ class Menu extends Component {
 
 const mapStateToProps = state => {
   return {
-    currentLesson: state.currentLesson
+    lesson: state.lesson
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSetCurrentLesson: (lesson) => dispatch(actions.setLesson(lesson))
+    onSelectLesson: (lesson) => dispatch(actions.getLesson(lesson.id))
   }
 }
 

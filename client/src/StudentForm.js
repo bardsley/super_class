@@ -2,10 +2,14 @@
  * Created by Adam Bardsley on 19/12/2018.
  */
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import * as actions from './store/actions'
+
 var MDLite = require('material-design-lite/material');
 window.componentHandler = MDLite.componentHandler;
+
 class StudentForm extends Component {
-    createStudent() {
+    OLDcreateStudent() {
         let full_name = document.getElementById('full_name').value
         let email = document.getElementById('email').value
         let phone = document.getElementById('phone').value
@@ -27,15 +31,16 @@ class StudentForm extends Component {
     }
 
     componentDidMount() {
-        window.componentHandler.upgradeDom();
+        if(window.componentHandler) { window.componentHandler.upgradeDom() }
     }
     componentDidUpdate() {
-        window.componentHandler.upgradeDom();
+        if(window.componentHandler) { window.componentHandler.upgradeDom() }
     }
 
     render() {
         return<form action="#" onSubmit={(form) => {
             form.preventDefault() // stop it posting
+            this.props.onSubmitCreateForm(form)
         }}>
 
             <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -52,10 +57,28 @@ class StudentForm extends Component {
                 <input className="mdl-textfield__input" type="text" id="phone"/>
                 <label className="mdl-textfield__label" htmlFor="phone"><i className="material-icons">phone</i>Phone</label>
             </div><br/>
-            <TextButton cta="Create Student" onClick={() => this.createStudent()}></TextButton>
+            <TextButton cta="Create Student"></TextButton>
         </form>
     }
 }
+
+
+const mapStateToProps = state => {
+    return {
+        lesson: state.lesson,
+        students: state.students
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onSubmitCreateForm: (form) => dispatch(actions.createStudent(form)),
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(StudentForm);
+
+// Additional Component
 
 class TextButton extends Component {
     constructor (props) {
@@ -64,22 +87,16 @@ class TextButton extends Component {
     }
 
     componentDidMount() {
-        window.componentHandler.upgradeDom();
+        if(window.componentHandler) { window.componentHandler.upgradeDom() }
     }
     componentDidUpdate() {
-        window.componentHandler.upgradeDom();
+        if(window.componentHandler) { window.componentHandler.upgradeDom() }
     }
 
 
     render() {
-
-        // let {students, student} = this.state
-
         return <button onClick={this.props.onClick} className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
             {this.props.cta}
         </button>
     }
 }
-
-
-export default StudentForm;

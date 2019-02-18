@@ -13,14 +13,16 @@ class SearchField extends Component {
                 data.preventDefault() // stop it posting
                 let search_term = document.getElementById('theq').value
                 this.props.onSearchForStudent(search_term)
+                console.log(this.query_element)
+                this.query_element.value = ''
+                this.query_element.closest('.is-dirty').classList.remove("is-dirty");
+                this.query_element.blur()
             }}>
-                <div className="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
-                    <label className="mdl-button mdl-js-button mdl-button--icon" htmlFor="theq">
-                        <i className="material-icons">search</i>
-                    </label>
-                    <div className="mdl-textfield__expandable-holder">
-                        <input id="theq" className="mdl-textfield__input" type="text" name="q" />
-                    </div>
+                <label className="mdl-button mdl-js-button mdl-button--icon" htmlFor="theq">
+                    <i className="material-icons">search</i>
+                </label>
+                <div className="mdl-textfield__expandable-holder">
+                    <input id="theq" className="mdl-textfield__input" type="text" name="q" ref={el => this.query_element = el}/>
                 </div>
             </form>
         </div>

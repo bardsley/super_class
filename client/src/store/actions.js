@@ -87,7 +87,7 @@ export const loadStudents = () => {
 }
 
 export const filterStudents = (query) => {
-    let query_string = query ? "?q=" + query : ""
+    let query_string = query ? "?q=" + query + "&order=alphabetical" : ""
     return dispatch => {
         ajaxFetch('/api/students' + query_string)
         .then(students => {

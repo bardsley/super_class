@@ -3,10 +3,15 @@ class StudentsController < ApiController
 
   # GET /students
   def index
-    if params[:q].present?
-      @students = Student.order(:first_name,:last_name).filter_by(params[:q])
+    if params[:order] == "alphabetical"
+      @students = Student.order(:first_name, :last_name) 
     else
-      @students = Student.order(:first_name,:last_name).all
+      @students = Student.order('updated_at DESC')
+    end
+    if params[:q].present?
+      @students = @students.filter_by(params[:q])
+    else
+      @students = @students.all
     end
 
     render json: @students

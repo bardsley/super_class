@@ -36,16 +36,27 @@ export const TOGGLE_STUDENT = 'TOGGLE_STUDENT'
 export const CREATE_STUDENT = 'CREATE_STUDENT'
 
 // Action Creators for Student Editing
-export const createStudent = (form) => {
-    window.stuff = form.target 
+export const createStudent = (student) => {
+    console.log(student)
     return dispatch => {
-        dispatch(submitStudent())
+        ajaxPost('/api/students', {
+            full_name: student.full_name,
+            email: student.email,
+            phone_number: student.phone,
+        }).then(student => {
+            dispatch(submitStudent(student))
+        })
+        // .then(student => {
+        //     dispatch(loadStudents())
+        // })
+        
     }
 }
 
-export const submitStudent = () => {
+export const submitStudent = (student) => {
     return {
         type: CREATE_STUDENT,
+        student: student
     }
 }
 

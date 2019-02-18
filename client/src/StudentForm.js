@@ -9,25 +9,67 @@ var MDLite = require('material-design-lite/material');
 window.componentHandler = MDLite.componentHandler;
 
 class StudentForm extends Component {
-    OLDcreateStudent() {
-        let full_name = document.getElementById('full_name').value
-        let email = document.getElementById('email').value
-        let phone = document.getElementById('phone').value
-        window.app.post('/api/students', {
-            full_name: full_name,
-            email: email,
-            phone_number: phone,
-        })
-        .then(
-            student => {
-                window.app.setState({student: student})
-                let origStudents = window.app.state.students
-                console.log(origStudents)
-                origStudents.push(student)
-                console.log(origStudents)
-                window.app.setState({students: origStudents })
-            }
-        )
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            full_name: '',
+            email: '',
+            phone: ''
+        };
+    }
+
+    handleChange = (event) => {
+        if(event.target.id === 'full_name') { this.setState({full_name: event.target.value}) }
+        if(event.target.id === 'email') { this.setState({email: event.target.value}) }
+        if(event.target.id === 'phone') { this.setState({phone: event.target.value}) }
+    }
+
+    handleSubmit = (event) =>{
+        console.log("do submit")
+        event.preventDefault();
+        this.props.onSubmitCreateForm(this.state)
+    }
+
+    // OLDcreateStudent() {
+    //     let full_name = document.getElementById('full_name').value
+    //     let email = document.getElementById('email').value
+    //     let phone = document.getElementById('phone').value
+    //     window.app.post('/api/students', {
+    //         full_name: full_name,
+    //         email: email,
+    //         phone_number: phone,
+    //     })
+    //     .then(
+    //         student => {
+    //             window.app.setState({student: student})
+    //             let origStudents = window.app.state.students
+    //             console.log(origStudents)
+    //             origStudents.push(student)
+    //             console.log(origStudents)
+    //             window.app.setState({students: origStudents })
+    //         }
+    //     )
+    // }
+
+    render() {
+        return<form id="createStudentForm" action="/#" onSubmit={this.handleSubmit}>
+            <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input className="mdl-textfield__input" type="text" id="full_name" key="full_name" value={this.state.full_name} onChange={this.handleChange}/>
+                    <label className="mdl-textfield__label" htmlFor="name"><i className="material-icons">person</i>Name</label>
+            </div>
+
+            <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input className="mdl-textfield__input" type="text" id="email" value={this.state.email} onChange={this.handleChange}/>
+                <label className="mdl-textfield__label" htmlFor="email"><i className="material-icons">email</i>Email</label>
+            </div>
+
+            <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input className="mdl-textfield__input" type="text" id="phone" value={this.state.phone} onChange={this.handleChange}/>
+                <label className="mdl-textfield__label" htmlFor="phone"><i className="material-icons">phone</i>Phone</label>
+            </div><br/>
+            <TextButton cta="Create Student" onClick={this.submit}></TextButton>
+        </form>
     }
 
     componentDidMount() {
@@ -35,30 +77,6 @@ class StudentForm extends Component {
     }
     componentDidUpdate() {
         if(window.componentHandler) { window.componentHandler.upgradeDom() }
-    }
-
-    render() {
-        return<form action="#" onSubmit={(form) => {
-            form.preventDefault() // stop it posting
-            this.props.onSubmitCreateForm(form)
-        }}>
-
-            <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input className="mdl-textfield__input" type="text" id="full_name"/>
-                    <label className="mdl-textfield__label" htmlFor="name"><i className="material-icons">person</i>Name</label>
-            </div>
-
-            <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input className="mdl-textfield__input" type="text" id="email"/>
-                <label className="mdl-textfield__label" htmlFor="email"><i className="material-icons">email</i>Email</label>
-            </div>
-
-            <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input className="mdl-textfield__input" type="text" id="phone"/>
-                <label className="mdl-textfield__label" htmlFor="phone"><i className="material-icons">phone</i>Phone</label>
-            </div><br/>
-            <TextButton cta="Create Student"></TextButton>
-        </form>
     }
 }
 
@@ -72,7 +90,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSubmitCreateForm: (form) => dispatch(actions.createStudent(form)),
+        onSubmitCreateForm: (student) => dispatch(actions.createStudent(student)),
     }
 }
 

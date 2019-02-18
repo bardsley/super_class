@@ -30,6 +30,7 @@ const reducer = (state = initialState, action) => {
             })
             break;
         case actions.CREATE_STUDENT:
+            newState.students = state.students.concat(action.student)
             break;
         default:
         if(/@@redux/.test(action.type) || /@@INIT/.test(action.type)) {} else {

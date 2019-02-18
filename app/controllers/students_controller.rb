@@ -4,9 +4,9 @@ class StudentsController < ApiController
   # GET /students
   def index
     if params[:q].present?
-      @students = Student.filter_by(params[:q])
+      @students = Student.order(:first_name,:last_name).filter_by(params[:q])
     else
-      @students = Student.all
+      @students = Student.order(:first_name,:last_name).all
     end
 
     render json: @students

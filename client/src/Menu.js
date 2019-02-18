@@ -46,6 +46,15 @@ class Menu extends Component {
         <nav className="mdl-navigation"> {Object.keys(lessons).map((key) => {
           let lesson = lessons[key]
           let selected_class = null
+          let start_datetime = null
+          if(lesson.start_at) {
+            start_datetime = new Intl.DateTimeFormat('en-GB',{
+              year: 'numeric',
+              month: 'long',
+              day: '2-digit'
+            }).format(Date.parse(lesson.start_at))
+          }
+          console.log(start_datetime)
           if(this.props.lesson) {
             selected_class = lesson.id === this.props.lesson.id ? ' mdl-navigation__link--current' : ''
           }
@@ -58,7 +67,8 @@ class Menu extends Component {
               this.props.onSelectLesson(lesson);
             }}
             >
-            {lesson.name} 
+            {lesson.name}
+            <span style={{fontSize: '80%', marginTop: '-0.8em', display: 'block', color: 'rgb(0,0,0,0.5)'}}>{start_datetime}</span>
           </a>
           })}
         </nav>

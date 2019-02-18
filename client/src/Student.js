@@ -11,7 +11,7 @@ class Student extends Component {
         <span>{this.props.student.first_name} {this.props.student.last_name}</span>
         <span className="mdl-list__item-sub-title">{this.props.student.email}<br/>{this.props.student.phone_number}</span>
       </span>
-      <a className="mdl-list__item-secondary-content"  href="/#" >
+      <a className="mdl-list__item-secondary-content"  href="#" >
         <span className="mdl-list__item-secondary-action" >
           {
             this.props.active ? 

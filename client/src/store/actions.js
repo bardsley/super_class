@@ -46,9 +46,9 @@ export const createStudent = (student) => {
         }).then(student => {
             dispatch(submitStudent(student))
         })
-        // .then(student => {
-        //     dispatch(loadStudents())
-        // })
+        .then(student => {
+            dispatch(loadStudents())
+        })
         
     }
 }

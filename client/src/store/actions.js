@@ -37,7 +37,6 @@ export const CREATE_STUDENT = 'CREATE_STUDENT'
 
 // Action Creators for Student Editing
 export const createStudent = (student) => {
-    console.log(student)
     return dispatch => {
         ajaxPost('/api/students', {
             full_name: student.full_name,

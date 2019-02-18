@@ -54,7 +54,6 @@ class Menu extends Component {
               day: '2-digit'
             }).format(Date.parse(lesson.start_at))
           }
-          console.log(start_datetime)
           if(this.props.lesson) {
             selected_class = lesson.id === this.props.lesson.id ? ' mdl-navigation__link--current' : ''
           }

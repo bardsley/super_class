@@ -47,7 +47,7 @@ class StudentForm extends Component {
                 <input className="mdl-textfield__input" type="text" id="phone" value={this.state.phone} onChange={this.handleChange}/>
                 <label className="mdl-textfield__label" htmlFor="phone"><i className="material-icons">phone</i>Phone</label>
             </div><br/>
-            <TextButton cta="Create Student" onClick={this.submit}></TextButton>
+            <TextButton cta="Create Student" onClick={this.submit}></TextButton> or <a href="#back_to_listing" onClick={() => this.props.onLoadStudents()} >Back to Student List</a>
         </form>
     }
 
@@ -71,6 +71,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onSubmitCreateForm: (student) => dispatch(actions.createStudent(student)),
+        onLoadStudents: () => dispatch(actions.loadStudents())
     }
 }
 

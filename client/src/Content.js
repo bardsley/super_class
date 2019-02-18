@@ -21,7 +21,10 @@ class Content extends Component {
   render() {
 
     let {students,lesson} = this.props
-    // let currentLesson = this.props.currentLesson
+    let clear_search = ''
+    if(this.props.query) {
+      clear_search = <a href="#clear_Search" onClick={() => this.props.onLoadStudents()} >Clear Search</a>       
+    }
     let attendance_ids = []
     if(this.state.lesson) {
       attendance_ids = this.state.lesson.attendances.map((attendance) => {return attendance.student_id})
@@ -44,7 +47,7 @@ class Content extends Component {
                 active={student.attending} 
                 onClick={() => this.props.onToggleAttendance(lesson,student)}
               />
-            })}
+            })} { clear_search}
             </ul>
           </div>
         } else { // It was empty
@@ -57,6 +60,7 @@ class Content extends Component {
       }
     }
 
+    // 
     return <div id="content"><main className="mdl-layout__content">
         {content}
       </main>
@@ -67,7 +71,8 @@ class Content extends Component {
 const mapStateToProps = state => {
   return {
     lesson: state.lesson,
-    students: state.students
+    students: state.students,
+    query: state.query
   }
 }
 

@@ -13,49 +13,28 @@ class StudentForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            full_name: '',
+            full_name: this.props.query ? this.props.query : '',
             email: '',
             phone: ''
         };
     }
 
     handleChange = (event) => {
+        console.log("handleChange")
         if(event.target.id === 'full_name') { this.setState({full_name: event.target.value}) }
         if(event.target.id === 'email') { this.setState({email: event.target.value}) }
         if(event.target.id === 'phone') { this.setState({phone: event.target.value}) }
     }
 
-    handleSubmit = (event) =>{
-        console.log("do submit")
+    handleSubmit = (event) => {
         event.preventDefault();
         this.props.onSubmitCreateForm(this.state)
     }
 
-    // OLDcreateStudent() {
-    //     let full_name = document.getElementById('full_name').value
-    //     let email = document.getElementById('email').value
-    //     let phone = document.getElementById('phone').value
-    //     window.app.post('/api/students', {
-    //         full_name: full_name,
-    //         email: email,
-    //         phone_number: phone,
-    //     })
-    //     .then(
-    //         student => {
-    //             window.app.setState({student: student})
-    //             let origStudents = window.app.state.students
-    //             console.log(origStudents)
-    //             origStudents.push(student)
-    //             console.log(origStudents)
-    //             window.app.setState({students: origStudents })
-    //         }
-    //     )
-    // }
-
     render() {
         return<form id="createStudentForm" action="/#" onSubmit={this.handleSubmit}>
             <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input className="mdl-textfield__input" type="text" id="full_name" key="full_name" value={this.state.full_name} onChange={this.handleChange}/>
+                <input className="mdl-textfield__input" type="text" id="full_name" key="full_name" autoFocus value={this.state.full_name} onChange={this.handleChange}/>
                     <label className="mdl-textfield__label" htmlFor="name"><i className="material-icons">person</i>Name</label>
             </div>
 
@@ -84,7 +63,8 @@ class StudentForm extends Component {
 const mapStateToProps = state => {
     return {
         lesson: state.lesson,
-        students: state.students
+        students: state.students,
+        query: state.query
     }
 }
 

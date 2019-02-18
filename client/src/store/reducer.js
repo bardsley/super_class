@@ -20,6 +20,7 @@ const reducer = (state = initialState, action) => {
             break;
         case actions.LOAD_STUDENTS:
             newState.students = action.students
+            newState.query = action.query
             break;
         case actions.TOGGLE_STUDENT:
             newState.students = state.students.map((student) => {

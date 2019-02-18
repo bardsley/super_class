@@ -93,18 +93,19 @@ export const filterStudents = (query) => {
         ajaxFetch('/api/students' + query_string)
         .then(students => {
             if (students && students.length) {
-                dispatch(setStudents(students))
+                dispatch(setStudents(students,query))
             } else {
-                dispatch(setStudents([]))
+                dispatch(setStudents([],query))
             }
         })
     }
 }
 
-export const setStudents = (students) => {
+export const setStudents = (students,query) => {
     return {
         type: LOAD_STUDENTS,
         students: students,
+        query: query
     }
 }
 

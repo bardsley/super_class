@@ -13,10 +13,9 @@ class SearchField extends Component {
                 data.preventDefault() // stop it posting
                 let search_term = document.getElementById('theq').value
                 this.props.onSearchForStudent(search_term)
-                console.log(this.query_element)
-                this.query_element.value = ''
                 this.query_element.closest('.is-dirty').classList.remove("is-dirty");
                 this.query_element.blur()
+                this.query_element.value = ''
             }}>
                 <label className="mdl-button mdl-js-button mdl-button--icon" htmlFor="theq">
                     <i className="material-icons">search</i>

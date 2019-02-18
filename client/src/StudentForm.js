@@ -20,7 +20,6 @@ class StudentForm extends Component {
     }
 
     handleChange = (event) => {
-        console.log("handleChange")
         if(event.target.id === 'full_name') { this.setState({full_name: event.target.value}) }
         if(event.target.id === 'email') { this.setState({email: event.target.value}) }
         if(event.target.id === 'phone') { this.setState({phone: event.target.value}) }

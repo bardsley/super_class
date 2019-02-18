@@ -53,7 +53,7 @@ class Content extends Component {
           </div>
         }
       } else {
-        content = <div>Please select a lesson from the menu</div>
+        content = <div className="student-form">Please select a lesson from the menu</div>
       }
     }
 
@@ -73,7 +73,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSelectStudent: (student_id) => dispatch({type: actions.SET_STUDENT, student_id: student_id}),
     onLoadStudents: () => dispatch(actions.loadStudents()),
     onToggleAttendance: (lesson,student) => dispatch(actions.toggleStudentAttendance(lesson,student))
   }

@@ -116,7 +116,12 @@ export const toggleStudentAttendance = (lesson,student) => {
             ajaxPost('/api/attendances', {
               student_id: student.id,
               lesson_id: lesson.id
-            }).then(response => {dispatch(setStudentAttendance(student))})
+            }).then(response => {dispatch(setStudentAttendance(student))}).then(student => {
+                window.open("sumupmerchant://pay/1.0?amount=1.0&callbacksuccess="+
+                    encodeURI("https://super-class.herokuapp.com")+"title="+
+                    lesson.name+
+                    "&currency=GBP&affiliate-key=416a4490-6742-44c5-b2f5-261c88375687")
+            })
           } else {
             ajaxDelete('/api/attendances/clear',{
               student_id: student.id,

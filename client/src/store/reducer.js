@@ -29,7 +29,6 @@ const reducer = (state = initialState, action) => {
                 }
                 return student
             })
-            window.open("sumupmerchant://pay/1.0?amount=1.0&currency=GBP&affiliate-key=416a4490-6742-44c5-b2f5-261c88375687")
             break;
         case actions.CREATE_STUDENT:
             // Not needed whilstr doing a full refresh newState.students = state.students.concat(action.student)

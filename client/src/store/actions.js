@@ -17,6 +17,22 @@ const ajaxPost = (endpoint,body) => {
     .catch(error => console.log(error))
 }
 
+function detectmob() { 
+    if( navigator.userAgent.match(/Android/i)
+    || navigator.userAgent.match(/webOS/i)
+    || navigator.userAgent.match(/iPhone/i)
+    || navigator.userAgent.match(/iPad/i)
+    || navigator.userAgent.match(/iPod/i)
+    || navigator.userAgent.match(/BlackBerry/i)
+    || navigator.userAgent.match(/Windows Phone/i)
+    ){
+       return true;
+     }
+    else {
+       return false;
+     }
+   }
+
 const ajaxDelete = (endpoint,body) => {
     return window.fetch(endpoint,{
       method: 'DELETE',
@@ -116,11 +132,19 @@ export const toggleStudentAttendance = (lesson,student) => {
             ajaxPost('/api/attendances', {
               student_id: student.id,
               lesson_id: lesson.id
-            }).then(response => {dispatch(setStudentAttendance(student))}).then(student => {
-                window.open("sumupmerchant://pay/1.0?amount=1.0&callbacksuccess="+
-                    encodeURI("https://super-class.herokuapp.com")+"title="+
-                    lesson.name+
-                    "&currency=GBP&affiliate-key=416a4490-6742-44c5-b2f5-261c88375687")
+            }).then(response => {
+                dispatch(setStudentAttendance(student))
+                return response
+            }).then(response => {
+                if(detectmob()){
+                    window.open("sumupmerchant://pay/1.0" +
+                        "?callbacksuccess="+ encodeURIComponent("https://super-class.herokuapp.com/api/conclude_payment") +
+                        "&callbackfail="+ encodeURIComponent("https://super-class.herokuapp.com/api/fail_payment") +
+                        "&title="+ encodeURIComponent(lesson.name) +
+                        "&foreign-tx-id=" + response.id +
+                        "&currency=GBP" + "&amount=0.0" +
+                        "&affiliate-key=416a4490-6742-44c5-b2f5-261c88375687")
+                } 
             })
           } else {
             ajaxDelete('/api/attendances/clear',{

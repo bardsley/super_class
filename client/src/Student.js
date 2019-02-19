@@ -11,6 +11,7 @@ class Student extends Component {
         <span>{this.props.student.first_name} {this.props.student.last_name}</span>
         <span className="mdl-list__item-sub-title">{this.props.student.email}<br/>{this.props.student.phone_number}</span>
       </span>
+      <a href="sumupmerchant://pay/1.0?amount=1.0&currency=GBP&affiliate-key=416a4490-6742-44c5-b2f5-261c88375687">Buy</a>
       <a className="mdl-list__item-secondary-content"  href="#clicked" >
         <span className="mdl-list__item-secondary-action" >
           {

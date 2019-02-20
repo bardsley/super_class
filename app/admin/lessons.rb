@@ -1,10 +1,12 @@
 ActiveAdmin.register Lesson do
     permit_params :name, :description, :dance_styles,
         :start_at, :end_at,
-        :location_name, :lat, :lng
+        :location_name, :lat, :lng, :prices
     preserve_default_filters!
     filter :students
     remove_filter :lat, :lng
+
+    json_editor
 
     index do
         selectable_column

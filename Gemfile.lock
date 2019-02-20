@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    ace-rails-ap (4.1.5)
     actioncable (5.2.2)
       actionpack (= 5.2.2)
       nio4r (~> 2.0)
@@ -37,6 +38,9 @@ GEM
       ransack (>= 1.8.7)
       sass (~> 3.1)
       sprockets (< 4.1)
+    activeadmin_json_editor (0.0.9)
+      ace-rails-ap
+      railties (>= 3.0)
     activejob (5.2.2)
       activesupport (= 5.2.2)
       globalid (>= 0.3.6)
@@ -213,6 +217,7 @@ PLATFORMS
 DEPENDENCIES
   active_skin
   activeadmin
+  activeadmin_json_editor
   bootsnap (>= 1.1.0)
   byebug
   devise

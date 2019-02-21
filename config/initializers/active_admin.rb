@@ -1,21 +1,5 @@
 ActiveAdmin.setup do |config|
-  # == Site Title
-  #
-  # Set the title that is displayed on the main layout
-  # for each of the active admin pages.
-  #
   config.site_title = "Super Class"
-
-  # Set the link url for the title. For example, to take
-  # users to your main site. Defaults to no link.
-  #
-  # config.site_title_link = "/"
-
-  # Set an optional image to be displayed for the header
-  # instead of a string (overrides :site_title)
-  #
-  # Note: Aim for an image that's 21px high so it fits in the header.
-  #
   # config.site_title_image = "logo.png"
 
   # == Default Namespace
@@ -107,12 +91,7 @@ ActiveAdmin.setup do |config|
   # config.logout_link_method = :get
 
   # == Root
-  #
-  # Set the action to call for the root path. You can set different
-  # roots for each namespace.
-  #
-  # Default:
-  # config.root_to = 'dashboard#index'
+  config.root_to = 'lessons#index'
 
   # == Admin Comments
   #
@@ -187,19 +166,8 @@ ActiveAdmin.setup do |config|
   # config.create_another = true
 
   # == Register Stylesheets & Javascripts
-  #
-  # We recommend using the built in Active Admin layout and loading
-  # up your own stylesheets / javascripts to customize the look
-  # and feel.
-  #
-  # To load a stylesheet:
   config.register_stylesheet 'active_admin/json_editor.css'
-
-  #
-  # You can provide an options hash for more control, which is passed along to stylesheet_link_tag():
-  #   config.register_stylesheet 'my_print_stylesheet.css', media: :print
-  #
-  # To load a javascript file:
+  #config.register_stylesheet 'my_print_stylesheet.css', media: :print
   config.register_javascript 'active_admin/json_editor.js'
 
   # == CSV options

@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import * as actions from './store/actions'
 import StudentForm from './StudentForm';
 import Student from './Student';
+import Login from './Login';
 
 class Content extends Component {
   constructor () {
@@ -33,33 +34,35 @@ class Content extends Component {
     let content = <div> 
       <div id="spinner" className="mdl-spinner mdl-js-spinner">Spin</div>
     </div>
-    
-    if(students) { // Something was returned
-      if(this.props.lesson) { // we have selected a lesson
-        if(students.length) { // There are some students
-          content = <div className="student-list">
-            <ul className="mdl-list"> {Object.keys(students).map((key) => {
-              let student = students[key]
-              if(student.attending == null) { student.attending = attendance_ids.includes(student.id) }
 
-              return <Student key={"student-" + student.id} 
-                student={ student } 
-                active={student.attending} 
-                onClick={() => this.props.onToggleAttendance(lesson,student)}
-              />
-            })} { clear_search}
-            </ul>
-          </div>
-        } else { // It was empty
-          content = <div className="student-form">
-              <StudentForm></StudentForm>
-          </div>
+    if(this.props.isAuthenticated) {
+      if(students) { // Something was returned
+        if(this.props.lesson) { // we have selected a lesson
+          if(students.length) { // There are some students
+            content = <div className="student-list">
+              <ul className="mdl-list"> {Object.keys(students).map((key) => {
+                let student = students[key]
+                if(student.attending == null) { student.attending = attendance_ids.includes(student.id) }
+  
+                return <Student key={"student-" + student.id} 
+                  student={ student } 
+                  active={student.attending} 
+                  onClick={() => this.props.onToggleAttendance(lesson,student)}
+                />
+              })} { clear_search}
+              </ul>
+            </div>
+          } else { // It was empty
+            content = <div className="student-form">
+                <StudentForm></StudentForm>
+            </div>
+          }
+        } else {
+          content = <div className="student-form">Please select a lesson from the menu</div>
         }
-      } else {
-        content = <div className="student-form">Please select a lesson from the menu</div>
       }
     }
-
+    
     // 
     return <div id="content"><main className="mdl-layout__content">
         {content}
@@ -70,9 +73,10 @@ class Content extends Component {
 
 const mapStateToProps = state => {
   return {
-    lesson: state.lesson,
-    students: state.students,
-    query: state.query
+    lesson: state.content.lesson,
+    students: state.content.students,
+    query: state.content.query,
+    isAuthenticated: state.auth.isAuthenticated
   }
 }
 

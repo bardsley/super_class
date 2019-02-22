@@ -9,8 +9,8 @@ class Menu extends Component {
   }
 
   componentDidMount() {
+
     this.getLessons()
-    window.app = this
   }
   
   fetch (endpoint) {
@@ -20,8 +20,10 @@ class Menu extends Component {
   }
 
   getLessons() {
-    this.fetch('/api/lessons')
-        .then(lessons => {
+    let token = localStorage.getItem('access_token') || null
+    this.fetch('/api/lessons',{ 
+        headers: { 'Authorization': `Bearer ${token}` }
+    }).then(lessons => {
           if (lessons && lessons.length) {
             this.setState({lessons: lessons})
             //this.getStudent(students[0].id)
@@ -33,7 +35,7 @@ class Menu extends Component {
  
   render() {
     let lessons = this.state.lessons
-
+    console.log("render the menu")
     // Default 
     let content = <div className="mdl-layout__drawer">
       <span className="mdl-layout-title">Menu</span>
@@ -79,7 +81,8 @@ class Menu extends Component {
 
 const mapStateToProps = state => {
   return {
-    lesson: state.lesson
+    lesson: state.lesson,
+    isAuthenticated: state.isAuthenticated
   }
 }
 

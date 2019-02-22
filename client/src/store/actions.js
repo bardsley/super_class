@@ -1,7 +1,10 @@
+let token = localStorage.getItem('access_token') || null
+
 const ajaxFetch = (endpoint) => {
-    return window.fetch(endpoint)
-    .then(response => response.json())
-    .catch(error => console.log(error))
+    return window.fetch(endpoint,{ 
+      headers: { 'Authorization': `Bearer ${token}` }
+    }).then(response => response.json())
+      .catch(error => console.log(error))
 }
 
 const ajaxPost = (endpoint,body) => {
@@ -10,6 +13,7 @@ const ajaxPost = (endpoint,body) => {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(body)
     })
@@ -39,6 +43,7 @@ const ajaxDelete = (endpoint,body) => {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(body)
     })
@@ -162,3 +167,100 @@ export const setStudentAttendance = (student) => {
         student: student,
     }
 }
+
+// LOGIN Stuff
+export const LOGIN_REQUEST = 'LOGIN_REQUEST'
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
+export const LOGIN_FAILURE = 'LOGIN_FAILURE'
+export const LOGOUT_REQUEST = 'LOGOUT_REQUEST'
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
+export const LOGOUT_FAILURE = 'LOGOUT_FAILURE'
+
+export const requestLogin = (creds) => {
+  return {
+    type: LOGIN_REQUEST,
+    isFetching: true,
+    isAuthenticated: false,
+    creds
+  }
+}
+
+export const receiveLogin = (user) => {
+  return {
+    type: LOGIN_SUCCESS,
+    isFetching: false,
+    isAuthenticated: true,
+    id_token: user.id
+  }
+}
+
+export const loginError = (message) => {
+  return {
+    type: LOGIN_FAILURE,
+    isFetching: false,
+    isAuthenticated: false,
+    message
+  }
+}
+
+export const loginUser = (creds) => {
+
+    let config = {
+      method: 'POST',
+      headers: { 'Content-Type':'application/x-www-form-urlencoded' },
+      body: `admin_user[email]=${creds.username}&admin_user[password]=${creds.password}`
+    }
+  
+    return dispatch => {
+      // We dispatch requestLogin to kickoff the call to the API
+      dispatch(requestLogin(creds))
+  
+      return fetch('/admin/login.json', config)
+        .then(response =>
+          response.json().then(user => ({ user, response }))
+              ).then(({ user, response }) =>  {
+          if (!response.ok) {
+            // If there was a problem, we want to
+            // dispatch the error condition
+            dispatch(loginError(user.message))
+            return Promise.reject(user)
+          } else {
+            let headers = response.headers
+            let access_token = headers.has('Authorization') ? headers.get('Authorization').split(" ")[1] : null
+            // If login was successful, set the token in local storage
+            localStorage.setItem('id_token', user.id)
+            localStorage.setItem('access_token', access_token)
+            // Dispatch the success action
+            dispatch(receiveLogin(user))
+            dispatch(loadStudents())
+          }
+        }).catch(err => console.log("Error: ", err))
+    }
+  }
+
+  function requestLogout() {
+    return {
+      type: LOGOUT_REQUEST,
+      isFetching: true,
+      isAuthenticated: true
+    }
+  }
+  
+  function receiveLogout() {
+    return {
+      type: LOGOUT_SUCCESS,
+      isFetching: false,
+      isAuthenticated: false
+    }
+  }
+  
+  // Logs the user out
+  export function logoutUser() {
+    return dispatch => {
+      dispatch(requestLogout())
+      localStorage.removeItem('id_token')
+      localStorage.removeItem('access_token')
+      dispatch(receiveLogout())
+    }
+  }
+  

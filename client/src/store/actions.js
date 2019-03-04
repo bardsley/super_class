@@ -141,7 +141,7 @@ export const toggleStudentAttendance = (lesson,student) => {
                 dispatch(setStudentAttendance(student))
                 return response
             }).then(response => {
-                if(detectmob()){
+                if(detectmob() && lesson.prices){
                     window.open("sumupmerchant://pay/1.0" +
                         "?callbacksuccess="+ encodeURIComponent("https://super-class.herokuapp.com/api/conclude_payment") +
                         "&callbackfail="+ encodeURIComponent("https://super-class.herokuapp.com/api/fail_payment") +

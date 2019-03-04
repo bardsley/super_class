@@ -48,3 +48,6 @@ gem 'active_skin'
 gem 'sendgrid-ruby'
 gem 'activeadmin_json_editor'
 gem 'devise-jwt'
+
+ # Logging etc
+ gem "newrelic_rpm"

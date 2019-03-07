@@ -35,7 +35,6 @@ class Menu extends Component {
  
   render() {
     let lessons = this.state.lessons
-    console.log("render the menu")
     // Default 
     let content = <div className="mdl-layout__drawer">
       <span className="mdl-layout-title">Menu</span>

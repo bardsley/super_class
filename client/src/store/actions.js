@@ -22,20 +22,20 @@ const ajaxPost = (endpoint,body) => {
 }
 
 function detectmob() { 
-    if( navigator.userAgent.match(/Android/i)
-    || navigator.userAgent.match(/webOS/i)
-    || navigator.userAgent.match(/iPhone/i)
-    || navigator.userAgent.match(/iPad/i)
-    || navigator.userAgent.match(/iPod/i)
-    || navigator.userAgent.match(/BlackBerry/i)
-    || navigator.userAgent.match(/Windows Phone/i)
-    ){
-       return true;
-     }
-    else {
-       return false;
-     }
-   }
+  if( navigator.userAgent.match(/Android/i)
+  || navigator.userAgent.match(/webOS/i)
+  || navigator.userAgent.match(/iPhone/i)
+  || navigator.userAgent.match(/iPad/i)
+  || navigator.userAgent.match(/iPod/i)
+  || navigator.userAgent.match(/BlackBerry/i)
+  || navigator.userAgent.match(/Windows Phone/i)
+  ){
+      return true;
+  }
+  else {
+    return false;
+  }
+}
 
 const ajaxDelete = (endpoint,body) => {
     return window.fetch(endpoint,{
@@ -131,35 +131,41 @@ export const setStudents = (students,query) => {
 
 // Attendance STuff
 export const toggleStudentAttendance = (lesson,student) => {
-    student.attending = !student.attending
-    return dispatch => {
-        if(student.attending) {
-            ajaxPost('/api/attendances', {
-              student_id: student.id,
-              lesson_id: lesson.id
-            }).then(response => {
-                dispatch(setStudentAttendance(student))
-                return response
-            }).then(response => {
-                if(detectmob() && lesson.prices){
-                    window.open("sumupmerchant://pay/1.0" +
-                        "?callbacksuccess="+ encodeURIComponent("https://super-class.herokuapp.com/api/conclude_payment") +
-                        "&callbackfail="+ encodeURIComponent("https://super-class.herokuapp.com/api/fail_payment") +
-                        "&title="+ encodeURIComponent(lesson.name) +
-                        "&foreign-tx-id=" + response.id +
-                        "&currency=GBP" + "&amount=0.0" +
-                        "&affiliate-key=416a4490-6742-44c5-b2f5-261c88375687")
-                } 
-            })
-          } else {
-            ajaxDelete('/api/attendances/clear',{
-              student_id: student.id,
-              lesson_id: lesson.id  
-            }).then(response => {dispatch(setStudentAttendance(student))})
-          }
-        return 
-    }
+  student.attending = !student.attending
+  return dispatch => {
+      if(student.attending) {
+          ajaxPost('/api/attendances', {
+            student_id: student.id,
+            lesson_id: lesson.id
+          }).then(response => {
+              dispatch(setStudentAttendance(student))
+              return response
+          }).then(response => {
+              if(detectmob() && lesson.prices){
+                let affiliate_key = '416a4490-6742-44c5-b2f5-261c88375687'
+                let title = encodeURIComponent(lesson.name)
+                let tx_id = response.id
+                let url = `sumupmerchant://pay/1.0?affiliate-key=${affiliate_key}&title=${title}&foreign-tx-id=${tx_id}&currency=GBP&amount=1.0`
+                window.open(url)
+                  // window.open("sumupmerchant://pay/1.0" +
+                  //   "?affiliate-key=" +
+                  //   // "&callbacksuccess="+ encodeURIComponent(window.location.origin + "/api/conclude_payment") +
+                  //   // "&callbackfail="+ encodeURIComponent(window.location.origin + "/api/fail_payment") +
+                  //   "&title="+ encodeURIComponent(lesson.name) +
+                  //   "&foreign-tx-id=" + response.id +
+                  //   "&currency=GBP" + "&amount=1.0"
+                  // )
+              } 
+          })
+        } else {
+          ajaxDelete('/api/attendances/clear',{
+            student_id: student.id,
+            lesson_id: lesson.id  
+          }).then(response => {dispatch(setStudentAttendance(student))})
+        }
+      return 
   }
+}
 
 export const setStudentAttendance = (student) => {
     return {

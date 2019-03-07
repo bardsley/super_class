@@ -9,7 +9,10 @@ class Student extends Component {
       <span className="mdl-list__item-primary-content">
         <i className="material-icons mdl-list__item-avatar">person</i>
         <span>{this.props.student.first_name} {this.props.student.last_name}</span>
-        <span className="mdl-list__item-sub-title">{this.props.student.email}<br/>{this.props.student.phone_number}</span>
+        <span className="mdl-list__item-sub-title">
+          {this.props.student.email}<br/>
+          {this.props.student.phone_number}
+        </span>
       </span>
       <a className="mdl-list__item-secondary-content"  href="#clicked" >
         <span className="mdl-list__item-secondary-action" >

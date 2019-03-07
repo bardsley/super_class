@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import * as actions from './store/actions'
 import StudentForm from './StudentForm';
 import Student from './Student';
-import Login from './Login';
 
 class Content extends Component {
   constructor () {
@@ -42,8 +41,7 @@ class Content extends Component {
             content = <div className="student-list">
               <ul className="mdl-list"> {Object.keys(students).map((key) => {
                 let student = students[key]
-                if(student.attending == null) { student.attending = attendance_ids.includes(student.id) }
-  
+                if(student.attending == null) { student.attending = attendance_ids.includes(student.id) }        
                 return <Student key={"student-" + student.id} 
                   student={ student } 
                   active={student.attending} 

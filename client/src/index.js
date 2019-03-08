@@ -19,13 +19,7 @@ ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementB
 
 let deferredPrompt;
 
-window.addEventListener('beforeinstallprompt', (e) => {
-  console.log("beforeinstall")
-  // Prevent Chrome 67 and earlier from automatically showing the prompt
-  e.preventDefault();
-  // Stash the event so it can be triggered later.
-  deferredPrompt = e;
-});
+
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
@@ -33,6 +27,16 @@ window.addEventListener('beforeinstallprompt', (e) => {
 serviceWorker.register({'serviceWorkerInDev': true});
 
 let btnAdd = document.getElementById('install')
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    console.log("beforeinstall")
+    // Prevent Chrome 67 and earlier from automatically showing the prompt
+    e.preventDefault();
+    // Stash the event so it can be triggered later.
+    deferredPrompt = e;
+    btnAdd.style.display = "block"
+  });
+
 btnAdd.addEventListener('click', (e) => {
     console.log("attempt the install!")
     // hide our user interface that shows our A2HS button

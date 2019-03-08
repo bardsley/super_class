@@ -145,7 +145,9 @@ export const toggleStudentAttendance = (lesson,student) => {
                 let affiliate_key = '416a4490-6742-44c5-b2f5-261c88375687'
                 let title = encodeURIComponent(lesson.name)
                 let tx_id = response.id
-                let url = `sumupmerchant://pay/1.0?affiliate-key=${affiliate_key}&title=${title}&foreign-tx-id=${tx_id}&currency=GBP&amount=1.0`
+                let success = encodeURIComponent(window.location.origin + "/api/conclude_payment")
+                let fail = encodeURIComponent(window.location.origin + "/api/fail_payment")
+                let url = `sumupmerchant://pay/1.0?affiliate-key=${affiliate_key}&title=${title}&foreign-tx-id=${tx_id}&currency=GBP&amount=1.0&callbacksuccess=${success}&callbackfail=${fail}`
                 window.open(url)
                   // window.open("sumupmerchant://pay/1.0" +
                   //   "?affiliate-key=" +

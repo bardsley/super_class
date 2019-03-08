@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import * as actions from './store/actions'
 
 // eslint-disable-next-line
-import logo from './logo.svg';
 import Header from './Header'
 import Menu from './Menu';
 import Content from './Content';

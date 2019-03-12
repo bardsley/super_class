@@ -23,6 +23,9 @@ const content = (state = initialLessonState, action) => {
             newState.students = action.students
             newState.query = action.query
             break;
+        case actions.LOAD_LESSONS:
+          newState.lessons = action.lessons
+          break;
         case actions.TOGGLE_STUDENT:
             newState.students = state.students.map((student) => {
                 if(student.id === action.student.id) {

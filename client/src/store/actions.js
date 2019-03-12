@@ -3,8 +3,9 @@ let token = localStorage.getItem('access_token') || null
 const ajaxFetch = (endpoint) => {
     return window.fetch(endpoint,{ 
       headers: { 'Authorization': `Bearer ${token}` }
-    }).then(response => response.json())
-      .catch(error => console.log(error))
+    }).then(response => {
+      return response.json()
+    }).catch(error => console.log("Failed Fetch",error))
 }
 
 const ajaxPost = (endpoint,body) => {
@@ -50,6 +51,7 @@ const ajaxDelete = (endpoint,body) => {
     .catch(error => console.log(error))
 }
 
+export const LOAD_LESSONS = 'LOAD_LESSONS'
 export const SET_LESSON = 'SET_LESSON'
 export const LOAD_STUDENTS = 'LOAD_STUDENTS'
 export const SET_STUDENT = 'SET_STUDENT'
@@ -57,20 +59,21 @@ export const TOGGLE_STUDENT = 'TOGGLE_STUDENT'
 export const CREATE_STUDENT = 'CREATE_STUDENT'
 
 // Action Creators for Student Editing
-export const createStudent = (student) => {
-    return dispatch => {
-        ajaxPost('/api/students', {
-            full_name: student.full_name,
-            email: student.email,
-            phone_number: student.phone,
-        }).then(student => {
-            dispatch(submitStudent(student))
-        })
-        .then(student => {
-            dispatch(loadStudents())
-        })
-        
-    }
+export const createStudent = (student,lesson) => {
+  return dispatch => {
+      ajaxPost('/api/students', {
+          full_name: student.full_name,
+          email: student.email,
+          phone_number: student.phone,
+      }).then(student => {
+          dispatch(submitStudent(student))
+      })
+      .then(student => {
+          dispatch(loadStudents())
+          dispatch(getLesson(lesson.id))
+      })
+      
+  }
 }
 
 export const submitStudent = (student) => {
@@ -100,6 +103,29 @@ export const setLesson = (lesson) => {
         type: SET_LESSON,
         lesson: lesson,
     }
+}
+
+export const getLessons = () => {
+  return dispatch => {
+    // Do a fetch
+    ajaxFetch('/api/lessons')
+    .then(lessons => {
+      console.log(lessons)
+      if (lessons) {
+        console.log("Dispatching loadLessons",lessons)
+        dispatch(loadLessons(lessons))
+      } else {
+          console.error('No lessons found',lessons)
+      }
+    })
+  }
+}
+
+export const loadLessons = (lessons) => {
+  return {
+      type: LOAD_LESSONS,
+      lessons: lessons,
+  }
 }
 
 // Action lreating to currently displayed Students
@@ -240,7 +266,8 @@ export const loginUser = (creds) => {
             localStorage.setItem('access_token', access_token)
             // Dispatch the success action
             dispatch(receiveLogin(user))
-            dispatch(loadStudents())
+            // dispatch(loadStudents()) // Needed? TODO
+            dispatch(getLessons())
           }
         }).catch(err => console.log("Error: ", err))
     }
@@ -264,6 +291,7 @@ export const loginUser = (creds) => {
   
   // Logs the user out
   export function logoutUser() {
+    console.log("Logining OUT!")
     return dispatch => {
       dispatch(requestLogout())
       localStorage.removeItem('id_token')

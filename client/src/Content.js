@@ -31,7 +31,7 @@ class Content extends Component {
     }
     // Default to a spinner
     let content = <div> 
-      <div id="spinner" className="mdl-spinner mdl-js-spinner">Spin</div>
+      <div id="spinner" className="mdl-spinner mdl-js-spinner">Loading</div>
     </div>
 
     if(this.props.isAuthenticated) {
@@ -59,6 +59,8 @@ class Content extends Component {
           content = <div className="student-form">Please select a lesson from the menu</div>
         }
       }
+    } else {
+      content = <div className="student-form">Login required...</div> 
     }
     
     // 

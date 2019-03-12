@@ -2,10 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux'
+import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
 import thunk from 'redux-thunk'
 
 import './index.css';
+import Header from './Header'
+import Menu from './Menu'
 import App from './App';
+import Login from './Login';
+
+
 import * as serviceWorker from './serviceWorker';
 import reducer from './store/reducer.js'
 
@@ -15,7 +21,20 @@ const store = createStore(reducer, /* preloadedState, */ composeEnhancers(
     applyMiddleware(thunk)
 ));
 
-ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
+const app = (
+  <Provider store={store}>
+  <Router>
+    <div className="mdl-layout mdl-js-layout">
+      <Route path="/" component={Header} />
+      <Route path="/" component={Menu}/>
+      <Route path="/" exact component={App} />
+      <Route path="/login" exact component={Login} />
+    </div>
+  </Router>
+  </Provider>
+)
+
+ReactDOM.render(app, document.getElementById('root'));
 
 let deferredPrompt;
 
@@ -30,7 +49,6 @@ serviceWorker.register();
 let btnAdd = document.getElementById('install')
 
 window.addEventListener('beforeinstallprompt', (e) => {
-    console.log("beforeinstall")
     // Prevent Chrome 67 and earlier from automatically showing the prompt
     e.preventDefault();
     // Stash the event so it can be triggered later.
@@ -39,7 +57,6 @@ window.addEventListener('beforeinstallprompt', (e) => {
   });
 
 btnAdd.addEventListener('click', (e) => {
-    console.log("attempt the install!")
     // hide our user interface that shows our A2HS button
     btnAdd.style.display = 'none';
     // Show the prompt
@@ -57,5 +74,5 @@ btnAdd.addEventListener('click', (e) => {
   });
 
   window.addEventListener('appinstalled', (evt) => {
-    console.logEvent('a2hs', 'installed');
+    console.log('a2hs', 'installed');
   });

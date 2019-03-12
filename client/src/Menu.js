@@ -5,36 +5,15 @@ import * as actions from './store/actions'
 class Menu extends Component {
   constructor () {
     super()
-    this.state = {}
   }
 
   componentDidMount() {
-
-    this.getLessons()
-  }
-  
-  fetch (endpoint) {
-    return window.fetch(endpoint)
-      .then(response => response.json())
-      .catch(error => console.log(error))
+    this.props.onGetLessons() 
   }
 
-  getLessons() {
-    let token = localStorage.getItem('access_token') || null
-    this.fetch('/api/lessons',{ 
-        headers: { 'Authorization': `Bearer ${token}` }
-    }).then(lessons => {
-          if (lessons && lessons.length) {
-            this.setState({lessons: lessons})
-            //this.getStudent(students[0].id)
-          } else {
-            this.setState({lessons: []})
-          }
-        })
-  }
- 
   render() {
-    let lessons = this.state.lessons
+    // let lessons = this.state.lessons
+    let lessons = this.props.lessons    
     // Default 
     let content = <div className="mdl-layout__drawer">
       <span className="mdl-layout-title">Menu</span>
@@ -80,14 +59,17 @@ class Menu extends Component {
 
 const mapStateToProps = state => {
   return {
-    lesson: state.lesson,
-    isAuthenticated: state.isAuthenticated
+    lesson: state.content.lesson,
+    lessons: state.content.lessons,
+    isAuthenticated: state.auth.isAuthenticated
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSelectLesson: (lesson) => dispatch(actions.getLesson(lesson.id))
+    onSelectLesson: (lesson) => dispatch(actions.getLesson(lesson.id)),
+    onGetLessons: () => dispatch(actions.getLessons()),
+    onLoggedOut: () => dispatch(actions.logoutUser())
   }
 }
 

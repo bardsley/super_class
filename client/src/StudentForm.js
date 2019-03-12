@@ -27,7 +27,7 @@ class StudentForm extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        this.props.onSubmitCreateForm(this.state)
+        this.props.onSubmitCreateForm(this.state,this.props.lesson)
     }
 
     render() {
@@ -61,15 +61,15 @@ class StudentForm extends Component {
 
 const mapStateToProps = state => {
     return {
-        lesson: state.lesson,
-        students: state.students,
-        query: state.query
+        lesson: state.content.lesson,
+        students: state.content.students,
+        query: state.content.query
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSubmitCreateForm: (student) => dispatch(actions.createStudent(student)),
+        onSubmitCreateForm: (student,lesson) => dispatch(actions.createStudent(student,lesson)),
         onLoadStudents: () => dispatch(actions.loadStudents())
     }
 }

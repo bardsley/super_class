@@ -8,8 +8,9 @@ class Login extends Component {
 
   render() {
     const { errorMessage } = this.props
-
-    return <form>
+    if(this.props.isAuthenticated) { this.props.history.push("/"); } 
+    return <div>
+      <form>
         <input type='text' ref='username' className="form-control" placeholder='Username'/><br/>
         <input type='password' ref='password' className="form-control" placeholder='Password'/><br/>
         <button onClick={(event) => this.handleClick(event)} className="btn btn-primary">
@@ -18,6 +19,7 @@ class Login extends Component {
 
         {errorMessage && <p>{errorMessage}</p> }
       </form>
+    </div>
   }
 
   handleClick(event) {
@@ -30,7 +32,8 @@ class Login extends Component {
 }
 const mapStateToProps = state => {
     return {
-      lesson: state.lesson
+      lesson: state.content.lesson,
+      isAuthenticated: state.auth.isAuthenticated
     }
   }
   

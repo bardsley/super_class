@@ -1,5 +1,5 @@
 theme: jekyll-theme-minimal
-title: "Super Class - dance before admin"
+# title: "Super Class"
 description: "Basic app to help manage a dance class"
 logo: "./admin_logo.png"
 # show_downloads: ["true" or "false" to indicate whether to provide a download URL]

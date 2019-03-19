@@ -1,4 +1,4 @@
-theme: jekyll-theme-minimal
+remote_theme: y7kim/agency-jekyll-theme
 # title: "Super Class"
 description: "Basic app to help manage a dance class"
 logo: "./admin_logo.png"

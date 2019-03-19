@@ -1,6 +1,6 @@
 remote_theme: "mmistakes/jekyll-theme-basically-basic"
 title: "Super Class"
 description: "Basic app to help manage a dance class"
-logo: "./admin_logo.png"
+logo: "./super_class.png"
 # show_downloads: ["true" or "false" to indicate whether to provide a download URL]
 # google_analytics: 

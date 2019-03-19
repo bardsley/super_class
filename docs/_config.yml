@@ -1,1 +1,6 @@
 theme: jekyll-theme-minimal
+title: Super Class - dance before admin
+description: Basic app to help manage a dance class
+logo: https://en.gravatar.com/userimage/21724/6cb8fc05dc3198261015a9046354b0a3.jpg
+show_downloads: ["true" or "false" to indicate whether to provide a download URL]
+# google_analytics: 

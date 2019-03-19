@@ -1,2 +1,5 @@
-# Super Class Website
-Now using a Markdown
+# Super Class 
+
+_Manage your class quicker and focus on the dancing_
+
+
